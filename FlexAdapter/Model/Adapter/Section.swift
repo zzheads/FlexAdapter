@@ -10,4 +10,8 @@ import UIKit
 
 class Section {
     var rows: [RowProtocol] = []
+    
+    public var lastRowIndex: Int {
+        return self.rows.count > 0 ? self.rows.count - 1 : 0
+    }
 }
