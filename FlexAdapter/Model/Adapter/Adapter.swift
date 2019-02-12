@@ -9,7 +9,9 @@
 import UIKit
 
 protocol TypeProtocol {
-    
+    var sectionId: String { get }
+    var rowId: String { get }
+    var row: RowProtocol { get }
 }
 
 protocol CellRegistrator {
@@ -18,8 +20,8 @@ protocol CellRegistrator {
 
 class Adapter: NSObject {
     weak var tableView: UITableView!
-    private var sections: [Section] = []
-    
+    var sections: [Section] = []
+    private var registeredCellIds: Set<String> = []
     var rows: [RowProtocol] {
         return self.sections.compactMap({ $0.rows }).reduce([], +)
     }
@@ -90,10 +92,6 @@ class Adapter: NSObject {
 }
 
 extension Adapter: CellRegistrator {
-    private var registeredCellIds: Set<String> {
-        return Set(self.rows.compactMap({ $0.cellId }))
-    }
-    
     private func isRegistered(cellId: String) -> Bool {
         return self.registeredCellIds.contains(cellId)
     }
@@ -101,6 +99,7 @@ extension Adapter: CellRegistrator {
     public func registerIfNeeded(cellClass: AnyClass, for cellId: String) {
         if !isRegistered(cellId: cellId) {
             self.tableView.register(cellClass, forCellReuseIdentifier: cellId)
+            self.registeredCellIds.insert(cellId)
         }
     }
 }

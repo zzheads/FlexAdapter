@@ -17,7 +17,7 @@ protocol ConfigurableCell {
 
 extension ConfigurableCell {
     static var reuseIdentifier: String {
-        return "\(self)"
+        return String(describing: self)
     }
     
     static var cellClass: Self.Type {

@@ -27,18 +27,19 @@ class LoadingAdapter<Loader: LoaderProtocol>: Adapter, UITableViewDelegate where
         return view
     }()
     
-    init(_ tableView: UITableView, loader: Loader, delegate: ProviderDelegate) {
+    init(_ tableView: UITableView, loader: Loader) {
         super.init(tableView)
-        self.provider = Provider(adapter: self, loader: loader, delegate: delegate)
+        self.provider = Provider(adapter: self, loader: loader)
         self.tableView.delegate = self
         self.tableView.tableFooterView = self.loadingIndicatorView
+        self.tableView.rowHeight = UITableView.automaticDimension
     }
     
-    public func fetchMore() -> Promise<[Adapter.Update]> {
+    public func fetchMore() -> Promise<[TypeProtocol]> {
         self.isLoading = true
-        return Promise<[Adapter.Update]> { resolver in
+        return Promise<[TypeProtocol]> { resolver in
             self.provider.fetch()
-                .done { updates in resolver.fulfill(updates) }
+                .done { newItems in resolver.fulfill(newItems) }
                 .catch { error in resolver.reject(error) }
                 .finally { self.isLoading = false }
         }
@@ -48,6 +49,7 @@ class LoadingAdapter<Loader: LoaderProtocol>: Adapter, UITableViewDelegate where
 
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
         guard !self.isLoading && indexPath == self.lastElementIndexPath else {
+            print("isLoading: \(isLoading), \(indexPath) != \(self.lastElementIndexPath)")
             return
         }
         self.fetchMore().cauterize()

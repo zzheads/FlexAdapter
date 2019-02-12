@@ -41,6 +41,7 @@ final class BankTransactionCell: UITableViewCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        self.backgroundColor = .lightGray
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -49,31 +50,32 @@ final class BankTransactionCell: UITableViewCell {
     
     override func layoutSubviews() {
         super.layoutSubviews()
-        self.contentView.addSubview(labelId)
-        self.contentView.addSubview(labelDate)
-        self.contentView.addSubview(labelAmount)
-        self.contentView.addSubview(labelComment)
+        self.addSubview(labelId)
+        self.addSubview(labelDate)
+        self.addSubview(labelAmount)
+        self.addSubview(labelComment)
+        self.makeConstraints()
     }
     
     func makeConstraints() {
         NSLayoutConstraint.activate([
-            self.labelId.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
-            self.labelId.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
-            self.labelId.topAnchor.constraint(equalTo: self.contentView.topAnchor),
+            self.labelId.leftAnchor.constraint(equalTo: self.leftAnchor),
+            self.labelId.rightAnchor.constraint(equalTo: self.rightAnchor),
+            self.labelId.topAnchor.constraint(equalTo: self.topAnchor),
             self.labelId.heightAnchor.constraint(equalToConstant: 22.0),
 
-            self.labelDate.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
-            self.labelDate.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
+            self.labelDate.leftAnchor.constraint(equalTo: self.leftAnchor),
+            self.labelDate.rightAnchor.constraint(equalTo: self.rightAnchor),
             self.labelDate.topAnchor.constraint(equalTo: labelId.bottomAnchor),
             self.labelDate.heightAnchor.constraint(equalToConstant: 22.0),
 
-            self.labelAmount.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
-            self.labelAmount.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
+            self.labelAmount.leftAnchor.constraint(equalTo: self.leftAnchor),
+            self.labelAmount.rightAnchor.constraint(equalTo: self.rightAnchor),
             self.labelAmount.topAnchor.constraint(equalTo: labelDate.bottomAnchor),
             self.labelAmount.heightAnchor.constraint(equalToConstant: 22.0),
             
-            self.labelComment.leftAnchor.constraint(equalTo: self.contentView.leftAnchor),
-            self.labelComment.rightAnchor.constraint(equalTo: self.contentView.rightAnchor),
+            self.labelComment.leftAnchor.constraint(equalTo: self.leftAnchor),
+            self.labelComment.rightAnchor.constraint(equalTo: self.rightAnchor),
             self.labelComment.topAnchor.constraint(equalTo: labelAmount.bottomAnchor),
             self.labelComment.heightAnchor.constraint(equalToConstant: 22.0)
             ])

@@ -9,7 +9,12 @@
 import UIKit
 
 class Section {
+    let header: String
     var rows: [RowProtocol] = []
+    
+    init(header: String) {
+        self.header = header
+    }
     
     public var lastRowIndex: Int {
         return self.rows.count > 0 ? self.rows.count - 1 : 0

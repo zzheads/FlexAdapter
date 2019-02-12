@@ -7,8 +7,25 @@
 //
 
 import PromiseKit
+import UIKit
 
-class BankTransaction: Codable, TypeProtocol {
+protocol Transaction: TypeProtocol {
+    var transactionType: String { get }
+}
+
+class BankTransaction: Codable, Transaction {
+    var sectionId: String {
+        return "\(date)"
+    }
+    
+    var rowId: String {
+        return "\(id)"
+    }
+    
+    var row: RowProtocol {
+        return Row<BankTransaction, BankTransactionCell>(self)
+    }
+    
     let id: String
     let date: Date
     let amount: Double
@@ -21,9 +38,25 @@ class BankTransaction: Codable, TypeProtocol {
         self.amount = amount
         self.comment = comment
     }
+    
+    var transactionType: String {
+        return "bank"
+    }
 }
 
-class TelecomTransaction: Codable, TypeProtocol {
+class TelecomTransaction: Codable, Transaction {
+    var sectionId: String {
+        return "\(self.date)"
+    }
+    
+    var rowId: String {
+        return "\(self.type)"
+    }
+
+    var row: RowProtocol {
+        return Row<TelecomTransaction, TelecomTransactionCell>(self)
+    }
+    
     let id: String
     let operatorName: String
     let date: Date
@@ -37,9 +70,25 @@ class TelecomTransaction: Codable, TypeProtocol {
         self.amount = amount
         self.type = type
     }
+    
+    var transactionType: String {
+        return "telecom"
+    }
 }
 
-class PostTransaction: Codable, TypeProtocol {
+class PostTransaction: Codable, Transaction {
+    var sectionId: String {
+        return "\(date)"
+    }
+    
+    var rowId: String {
+        return "\(sender)"
+    }
+    
+    var row: RowProtocol {
+        return Row<PostTransaction, PostTransactionCell>(self)
+    }
+    
     let date: Date
     let weight: Double
     let sender: String
@@ -50,6 +99,10 @@ class PostTransaction: Codable, TypeProtocol {
         self.weight = weight
         self.sender = sender
         self.receiver = receiver
+    }
+    
+    var transactionType: String {
+        return "post"
     }
 }
 
